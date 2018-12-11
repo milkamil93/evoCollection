@@ -25,10 +25,10 @@
 			$arr = explode(',',$conf['value']);
 			if (in_array($id,$arr))
 			{					
-				if (count($conf[fields]))
+				if (count($conf['fields']))
 				{
 					$fields_a = array('id');
-					foreach($conf[fields] as $k => $v) if ($k!='id') $fields_a[] = $k;
+					foreach($conf['fields'] as $k => $v) if ($k!='id') $fields_a[] = $k;
 					$fields = implode(',',$fields_a);
 					$idc = $key;
 					break;
@@ -40,10 +40,10 @@
 			$arr = explode(',',$conf['value']);
 			if (in_array($tid,$arr))
 			{					
-				if (count($conf[fields]))
+				if (count($conf['fields']))
 				{
 					$fields_a = array('id');
-					foreach($conf[fields] as $k => $v) if ($k!='id') $fields_a[] = $k;
+					foreach($conf['fields'] as $k => $v) if ($k!='id') $fields_a[] = $k;
 					$fields = implode(',',$fields_a);
 					$idc = $key;
 					break;
@@ -99,8 +99,8 @@
 	}
 	
 	
-	$prefix = $modx->db->config[table_prefix];
-	$lng = include MGR_DIR.'/includes/lang/'.$modx->config[manager_language].'.inc.php'; 
+	$prefix = $modx->db->config['table_prefix'];
+	$lng = include MGR_DIR.'/includes/lang/'.$modx->config['manager_language'].'.inc.php'; 
 	
 	
 	$res = $modx->db->query('select `column_name`,`column_type` from INFORMATION_SCHEMA.Columns where table_name = "'.$prefix.'site_content" order by ordinal_Position');
@@ -180,7 +180,7 @@
 		
 		if ($cf[$f]['table']!='tv')
 		{			
-			$url = $modx->config[site_manager_url];
+			$url = $modx->config['site_manager_url'];
 			$url.= '?a=27&id='.$_GET['id'];			
 			if ($_GET['show']) $url.='&show='.$_GET['show'];
 			$url.='&sorter=c.'.$cf[$f]['caption'];
@@ -321,7 +321,7 @@
 	$output.='<div id="pagination" style="text-align:center;"><ul>';
 	for ($i=1;$i<=$pages;$i++) 
 	{
-		$url = $modx->config[site_manager_url].'?a='.$_GET['a'].'&id='.$_GET['id'];
+		$url = $modx->config['site_manager_url'].'?a='.$_GET['a'].'&id='.$_GET['id'];
 		if ($_GET['show']) $url.='&show='.$_GET['show'];
 		if ($_GET['order']) $url.='&show='.$_GET['order'];
 		
@@ -338,7 +338,7 @@
 	
 	<link rel="stylesheet" type="text/css" href="/assets/plugins/evocollection/js/evocollection.css">
 	<script>
-	manager_url = "'.$modx->config[site_manager_url].'";
+	manager_url = "'.$modx->config['site_manager_url'].'";
 	how_click = "'.$config[$idc]['how_edit'].'";
 	new_doc = "'.$config[$idc]['new_doc'].'";
 	</script>
