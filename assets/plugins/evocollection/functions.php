@@ -7,7 +7,9 @@
 		{			
 			global $modx;	
 			if ($config['user_func']) return $modx->runSnippet($config['user_func'], $config);				
-			extract($config);		
+			extract($config);	
+			
+			$delimiter = isset($delimiter) ? $delimiter : '||';
 			
 			switch($mode)
 			{
@@ -90,11 +92,33 @@
 					else return '<div style="text-align:center;">Нет</div>';
 					break;
 					
-					case 'select':					
+					case 'dropdown':		
+					case 'select':	
+					$table = 		$table 		? $table 		: $_POST['table'];
+					$id = 			$id 		? $id 			: $_POST['id'];
+					$parent = 		$parent 	? $parent 		: $_POST['parent'];
+					$delimiter = 	$delimiter 	? $delimiter 	: $_POST['delimiter'];
+					$elements = 	$elements 	? $elements 	: $_POST['elements'];
+					$field = 		$field 		? $field 		: $_POST['field'];
+					$type =			$type 		? $type 		: $_POST['type'];
+					$user_func = 	$user_func 	? $user_func 	: $_POST['user_func'];
+					$value = 		$value 		? $value 		: $_POST['value'];
+					$table = 		$table 		? $table 		: $_POST['table'];
 					$s='Не выбрано';
+					if ($elements{0} === '@') {
+						if(substr($elements, 0, 5) === '@EVAL') {
+							$eval_str = trim(substr($elements, 6));
+							$elements = eval($eval_str);
+						} 
+						elseif(substr($elements, 0, 7) === '@SELECT') {
+							$select_str = trim(substr($elements, 1));
+							$elements = implode($delimiter, array_map(function ($item) {
+							  return implode('==', $item);
+							}, $modx->db->makeArray($modx->db->query($select_str))));
+						}
+					}
 					foreach(explode($delimiter,$elements) as $str)
-					{
-						
+					{						
 						$col = explode('==',$str);
 						if (isset($col[1]))
 						{
@@ -169,8 +193,21 @@
 						$return = '<input type="checkbox" value="1"'.$chk.' style="margin:0 auto;">';
 						break;
 						
+						case 'dropdown':
 						case 'select':
-						$s = '<select>';					
+						$s = '<select>';
+						if ($elements{0} === '@') {
+							if(substr($elements, 0, 5) === '@EVAL') {
+								$eval_str = trim(substr($elements, 6));
+								$elements = eval($eval_str);
+							} 
+							elseif(substr($elements, 0, 7) === '@SELECT') {
+								$select_str = trim(substr($elements, 1));
+								$elements = implode($delimiter, array_map(function ($item) {
+								  return implode('==', $item);
+								}, $modx->db->makeArray($modx->db->query($select_str))));
+							}
+						}
 						foreach(explode($delimiter,$elements) as $str)
 						{
 							$col = explode('==',$str);
