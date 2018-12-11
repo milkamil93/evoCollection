@@ -68,9 +68,9 @@
 	
 	<meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
 	<meta http-equiv="Content-Type" content="text/html; charset='.$modx->config['modx_charset'].'" />
-	<link rel="stylesheet" type="text/css" href="'.$modx->config[site_manager_url].'media/style/default/css/styles.min.css" />
-	<link rel="stylesheet" type="text/css" href="'.$modx->config[site_manager_url].'media/style/'.$modx->config['manager_theme'].'/style.css" />
-	<link rel="stylesheet" type="text/css" href="'.$modx->config[site_manager_url].'media/style/'.$modx->config['manager_theme'].'/css/fonts.css" />
+	<link rel="stylesheet" type="text/css" href="'.$modx->config['site_manager_url'].'media/style/default/css/styles.min.css" />
+	<link rel="stylesheet" type="text/css" href="'.$modx->config['site_manager_url'].'media/style/'.$modx->config['manager_theme'].'/style.css" />
+	<link rel="stylesheet" type="text/css" href="'.$modx->config['site_manager_url'].'media/style/'.$modx->config['manager_theme'].'/css/fonts.css" />
 	</head>
 	<style>
 	label{    font-size: 0.85rem;        color: rgba(128, 128, 128, 0.75); margin:10px 0 0 0; }
@@ -110,8 +110,8 @@
 		}
 		$configuration = $_POST;
 		unset($configuration['action']);
-		if ($configuration['type']=='template') $configuration['value'] = $configuration[template]; 
-		else $configuration['value'] = $configuration[ids];
+		if ($configuration['type']=='template') $configuration['value'] = $configuration['template']; 
+		else $configuration['value'] = $configuration['ids'];
 		unset($configuration['template']);
 		unset($configuration['ids']);
 		
@@ -291,7 +291,7 @@
 		</thead>
 		<tbody>';
 		
-		if (count($config[$idc]['fields']))
+		if (is_array($config[$idc]['fields']) && count($config[$idc]['fields']))
 		{
 			foreach($config[$idc]['fields'] as $field => $prop)
 			{
